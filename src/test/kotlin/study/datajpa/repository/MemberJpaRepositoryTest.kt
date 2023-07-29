@@ -67,4 +67,16 @@ class MemberJpaRepositoryTest(
         assertThat(result.size).isEqualTo(1)
     }
 
+    @Test
+    fun testNamedQuery() {
+        val member1 = Member(username = "AAA", age = 10)
+        val member2 = Member(username = "BBB", age = 20)
+        memberJpaRepository.save(member1)
+        memberJpaRepository.save(member2)
+
+        val result = memberJpaRepository.findByUsername("AAA")
+        val findMember = result[0]
+        assertThat(findMember).isEqualTo(member1)
+    }
+
 }
