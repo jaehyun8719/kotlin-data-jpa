@@ -54,4 +54,17 @@ class MemberRepositoryTest(
         assertThat(deletedCount).isEqualTo(0)
     }
 
+    @Test
+    fun findByUsernameAndAgeGreaterThan() {
+        val member1 = Member(username = "AAA", age = 10)
+        val member2 = Member(username = "AAA", age = 20)
+        memberRepository.save(member1)
+        memberRepository.save(member2)
+
+        val result = memberRepository.findByUsernameAndAgeGreaterThan("AAA", 15)
+        assertThat(result[0].username).isEqualTo("AAA")
+        assertThat(result[0].age).isEqualTo(20)
+        assertThat(result.size).isEqualTo(1)
+    }
+
 }
