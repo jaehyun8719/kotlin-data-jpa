@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import study.datajpa.entity.Member
+import study.datajpa.entity.Team
 
 @SpringBootTest
 @Transactional
 class MemberRepositoryTest(
     @Autowired private val memberRepository: MemberRepository,
 ) {
+    @Autowired
+    private lateinit var teamRepository: TeamRepository
 
     @Test
     fun testMember() {
@@ -88,6 +91,33 @@ class MemberRepositoryTest(
 
         val result = memberRepository.findUser("AAA", 10)
         assertThat(result[0]).isEqualTo(member1)
+    }
+
+    @Test
+    fun testFindUsernameList() {
+        val member1 = Member(username = "AAA", age = 10)
+        val member2 = Member(username = "BBB", age = 20)
+        memberRepository.save(member1)
+        memberRepository.save(member2)
+
+        val usernameList = memberRepository.findUsernameList()
+        for (s in usernameList) {
+            println("s = $s")
+        }
+    }
+
+    @Test
+    fun testFindMemberDto() {
+        val team1 = Team(1,"teamA")
+        teamRepository.save(team1)
+
+        val member1 = Member(username = "AAA", age = 10)
+        memberRepository.save(member1)
+
+        val memberDto = memberRepository.findMemberDto()
+        for (dto in memberDto) {
+            println("dto = $dto")
+        }
     }
 
 }
