@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import study.datajpa.entity.Member
 import study.datajpa.entity.Team
+import java.util.*
 
 @SpringBootTest
 @Transactional
@@ -117,6 +118,19 @@ class MemberRepositoryTest(
         val memberDto = memberRepository.findMemberDto()
         for (dto in memberDto) {
             println("dto = $dto")
+        }
+    }
+
+    @Test
+    fun testFindByNames() {
+        val member1 = Member(username = "AAA", age = 10)
+        val member2 = Member(username = "BBB", age = 20)
+        memberRepository.save(member1)
+        memberRepository.save(member2)
+
+        val result = memberRepository.findByNames(listOf("AAA", "BBB"))
+        for (member in result) {
+            println("member= $member")
         }
     }
 
