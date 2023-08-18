@@ -1,5 +1,7 @@
 package study.datajpa.repository
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -31,5 +33,7 @@ interface MemberRepository: JpaRepository<Member, Long> {
     fun findMemberByUsername(name: String): Member?      //단건 반환 (Nullable)
 
     fun findOptionalByUsername(name: String): Optional<Member> //단건 Optional 반환
+
+    fun findByAge(age: Int, pageable: Pageable): Page<Member>
 
 }

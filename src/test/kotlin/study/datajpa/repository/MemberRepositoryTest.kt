@@ -4,6 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
 import study.datajpa.entity.Member
 import study.datajpa.entity.Team
@@ -143,6 +145,28 @@ class MemberRepositoryTest(
 
         val findMemberByUsername = memberRepository.findMemberByUsername("asdasd")
         println("result = $findMemberByUsername")
+    }
+
+    @Test
+    fun pageTest() {
+        // 데이터 저장
+        memberRepository.save(Member(username = "member1", age = 10))
+        memberRepository.save(Member(username = "member2", age = 10))
+        memberRepository.save(Member(username = "member3", age = 10))
+        memberRepository.save(Member(username = "member4", age = 10))
+        memberRepository.save(Member(username = "member5", age = 10))
+
+        // 페이징 및 정렬 조건 설정
+        val pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"))
+        val page = memberRepository.findByAge(10, pageRequest)
+
+        val content = page.content
+        assertThat(content.size).isEqualTo(3)
+        assertThat(page.totalElements).isEqualTo(5L)
+        assertThat(page.number).isEqualTo(0)
+        assertThat(page.totalPages).isEqualTo(2)
+        assertThat(page.isFirst).isTrue()
+        assertThat(page.hasNext()).isTrue()
     }
 
 }
