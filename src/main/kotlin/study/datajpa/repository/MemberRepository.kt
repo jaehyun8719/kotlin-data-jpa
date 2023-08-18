@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import study.datajpa.dto.MemberDto
 import study.datajpa.entity.Member
+import java.util.*
 
 interface MemberRepository: JpaRepository<Member, Long> {
 
@@ -24,5 +25,11 @@ interface MemberRepository: JpaRepository<Member, Long> {
 
     @Query("select m from Member m where m.username in :names")
     fun findByNames(@Param("names") names: List<String>): List<Member>
+
+    fun findListByUsername(name: String): List<Member> //컬렉션 반환
+
+    fun findMemberByUsername(name: String): Member?      //단건 반환 (Nullable)
+
+    fun findOptionalByUsername(name: String): Optional<Member> //단건 Optional 반환
 
 }

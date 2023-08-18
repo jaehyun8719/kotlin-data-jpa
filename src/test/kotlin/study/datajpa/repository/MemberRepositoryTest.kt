@@ -134,4 +134,15 @@ class MemberRepositoryTest(
         }
     }
 
+    @Test
+    fun testReturnType() {
+        val member1 = Member(username = "AAA", age = 10)
+        val member2 = Member(username = "BBB", age = 20)
+        memberRepository.save(member1)
+        memberRepository.save(member2)
+
+        val findMemberByUsername = memberRepository.findMemberByUsername("asdasd")
+        println("result = $findMemberByUsername")
+    }
+
 }
